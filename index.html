@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VLM-Based Fake Image Detection Architecture - Interactive Deep Dive</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔬 VLM-Based Fake Image Detection Architecture</h1>
+            <p>AIGC vs Camera Detection • PhD-Level Interactive Analysis</p>
+        </header>
+
+        <div class="main-content">
+            <div class="architecture-panel">
+                <svg class="svg-container" viewBox="0 0 1400 1300" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Define arrow marker -->
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                            <polygon points="0 0, 10 3, 0 6" fill="#34495e" />
+                        </marker>
+                    </defs>
+
+                    <!-- Title -->
+                    <text x="700" y="40" text-anchor="middle" style="font-size: 24px; font-weight: bold; fill: #1e3c72;">
+                        VLM-Based Fake Image Detection (AIGC vs Camera) - Final Architecture
+                    </text>
+
+                    <!-- Input Image -->
+                    <g class="component" data-component="input">
+                        <rect x="550" y="70" width="300" height="60" rx="5"/>
+                        <text x="700" y="105" text-anchor="middle">Input Image</text>
+                    </g>
+
+                    <!-- Arrows from Input to three branches -->
+                    <path class="arrow" d="M 620,130 L 300,180"/>
+                    <text class="arrow-label" x="450" y="150">copy</text>
+
+                    <path class="arrow" d="M 700,130 L 700,180"/>
+                    <text class="arrow-label" x="710" y="160">copy</text>
+
+                    <path class="arrow" d="M 780,130 L 1100,180"/>
+                    <text class="arrow-label" x="950" y="150">copy</text>
+
+                    <!-- Left Branch: Captioner -->
+                    <g class="component" data-component="captioner">
+                        <rect x="100" y="180" width="400" height="80" rx="5"/>
+                        <text x="300" y="210" text-anchor="middle">Captioner (BLIP-2 / InstructBLIP)</text>
+                        <text x="300" y="235" text-anchor="middle" style="font-size: 13px;">Generate k captions</text>
+                    </g>
+
+                    <!-- OpenCLIP Image+Caption Similarity -->
+                    <g class="component" data-component="clip-similarity">
+                        <rect x="100" y="290" width="400" height="80" rx="5"/>
+                        <text x="300" y="315" text-anchor="middle">OpenCLIP: Image+Caption Similarity</text>
+                        <text x="300" y="340" text-anchor="middle" style="font-size: 13px;">Features: mean / max / variance</text>
+                    </g>
+
+                    <path class="arrow" d="M 300,260 L 300,290"/>
+
+                    <!-- Center Branch: OpenCLIP Prompt Bank -->
+                    <g class="component" data-component="prompt-bank">
+                        <rect x="550" y="180" width="300" height="80" rx="5"/>
+                        <text x="700" y="210" text-anchor="middle">OpenCLIP Prompt Bank</text>
+                        <text x="700" y="235" text-anchor="middle" style="font-size: 12px;">"photo", "AI image", "CGI", "art"...</text>
+                    </g>
+
+                    <!-- Scores + margins & softmax -->
+                    <g class="component" data-component="realism-margins">
+                        <rect x="550" y="290" width="300" height="80" rx="5"/>
+                        <text x="700" y="315" text-anchor="middle">Scores → margins & softmax</text>
+                        <text x="700" y="340" text-anchor="middle" style="font-size: 12px;">+ TTA variance (flip/crop/JPEG)</text>
+                    </g>
+
+                    <path class="arrow" d="M 700,260 L 700,290"/>
+
+                    <!-- Right Branch: Artifact Prompt Bank -->
+                    <g class="component" data-component="artifact-bank">
+                        <rect x="900" y="180" width="400" height="80" rx="5"/>
+                        <text x="1100" y="210" text-anchor="middle">Artifact Prompt Bank (OpenCLIP)</text>
+                        <text x="1100" y="235" text-anchor="middle" style="font-size: 12px;">"gibberish text", "bad hands",</text>
+                        <text x="1100" y="255" text-anchor="middle" style="font-size: 12px;">"repeating pattern", ...</text>
+                    </g>
+
+                    <!-- Similarity features -->
+                    <g class="component" data-component="artifact-features">
+                        <rect x="900" y="290" width="400" height="80" rx="5"/>
+                        <text x="1100" y="315" text-anchor="middle">Similarity features (+ optional</text>
+                        <text x="1100" y="340" text-anchor="middle" style="font-size: 13px;">Grad-CAM peak as evidence)</text>
+                    </g>
+
+                    <path class="arrow" d="M 1100,260 L 1100,290"/>
+
+                    <!-- Optional: Forensic Residuals (dashed box) -->
+                    <rect class="dashed-box" x="50" y="400" width="450" height="80" rx="5"/>
+                    <g class="component" data-component="forensic-residuals">
+                        <rect x="60" y="410" width="430" height="60" rx="5" style="fill: #ecf0f1; stroke: #95a5a6;"/>
+                        <text x="275" y="435" text-anchor="middle" style="font-size: 13px;">Optional: Forensic Residuals</text>
+                        <text x="275" y="455" text-anchor="middle" style="font-size: 12px;">(FFT/DCT, patch CNN)</text>
+                    </g>
+
+                    <!-- Optional: EXIF / Compression (dashed box) -->
+                    <rect class="dashed-box" x="550" y="400" width="300" height="80" rx="5"/>
+                    <g class="component" data-component="exif-compression">
+                        <rect x="560" y="410" width="280" height="60" rx="5" style="fill: #ecf0f1; stroke: #95a5a6;"/>
+                        <text x="700" y="435" text-anchor="middle" style="font-size: 13px;">Optional: EXIF / Compression</text>
+                        <text x="700" y="455" text-anchor="middle" style="font-size: 12px;">(JPEG tables, missing EXIF)</text>
+                    </g>
+
+                    <!-- Arrows to Feature Concatenation -->
+                    <path class="arrow" d="M 300,370 L 450,520"/>
+                    <path class="arrow" d="M 700,370 L 700,520"/>
+                    <path class="arrow" d="M 1100,370 L 850,520"/>
+                    <path class="arrow" d="M 275,480 L 600,520"/>
+                    <path class="arrow" d="M 700,480 L 700,520"/>
+
+                    <!-- Concatenate Features -->
+                    <g class="component" data-component="feature-concat">
+                        <rect x="450" y="520" width="500" height="80" rx="5"/>
+                        <text x="700" y="545" text-anchor="middle">Concatenate Features</text>
+                        <text x="700" y="565" text-anchor="middle" style="font-size: 12px;">[CLIPScore stats + realismMargins + artifact sims</text>
+                        <text x="700" y="582" text-anchor="middle" style="font-size: 12px;">(+ optional residual/EXIF)]</text>
+                    </g>
+
+                    <!-- Fusion Classifier -->
+                    <g class="component" data-component="fusion-classifier">
+                        <rect x="450" y="630" width="500" height="80" rx="5"/>
+                        <text x="700" y="660" text-anchor="middle">Fusion Classifier ("Conductor")</text>
+                        <text x="700" y="685" text-anchor="middle" style="font-size: 13px;">LogReg / small MLP (frozen VLMs)</text>
+                    </g>
+
+                    <path class="arrow" d="M 700,600 L 700,630"/>
+
+                    <!-- Calibration -->
+                    <g class="component" data-component="calibration">
+                        <rect x="450" y="740" width="500" height="60" rx="5"/>
+                        <text x="700" y="775" text-anchor="middle">Calibration (Platt / Temp Scaling)</text>
+                    </g>
+
+                    <path class="arrow" d="M 700,710 L 700,740"/>
+
+                    <!-- Output -->
+                    <g class="component" data-component="output">
+                        <rect x="400" y="830" width="600" height="100" rx="5"/>
+                        <text x="700" y="860" text-anchor="middle" style="font-weight: bold;">Output: P(fake) + Evidence</text>
+                        <text x="700" y="885" text-anchor="middle" style="font-size: 12px;">• photo vs AI margins, TTA variance</text>
+                        <text x="700" y="905" text-anchor="middle" style="font-size: 12px;">• artifact heatmap, top prompts/captions</text>
+                    </g>
+
+                    <path class="arrow" d="M 700,800 L 700,830"/>
+
+                    <!-- Protocol note -->
+                    <text x="50" y="980" style="font-size: 11px; fill: #555;">
+                        Protocol: Train on some generators; hold out at least one unseen generator. Report AUROC/AUPRC/EER; test robustness under JPEG/resize/blur.
+                    </text>
+                </svg>
+            </div>
+
+            <div class="info-panel">
+                <div class="info-content" id="info-content">
+                    <div class="welcome-message">
+                        <div class="icon">🎯</div>
+                        <h2>Welcome to the Deep Dive</h2>
+                        <p>Click on any component in the architecture diagram to explore comprehensive, PhD-level explanations of how this VLM-based fake image detection system works.</p>
+                        <p style="margin-top: 30px; font-size: 1em; color: #4a5568;">Each component contains detailed information about:</p>
+                        <ul style="text-align: left; display: inline-block; margin-top: 15px;">
+                            <li>Theoretical foundations & mathematical formulations</li>
+                            <li>Implementation details & architecture choices</li>
+                            <li>Training procedures & optimization strategies</li>
+                            <li>Challenges, limitations & research insights</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

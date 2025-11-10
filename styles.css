@@ -1,0 +1,287 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    overflow: hidden;
+}
+
+header {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+.main-content {
+    display: flex;
+    min-height: calc(100vh - 200px);
+}
+
+.architecture-panel {
+    flex: 1;
+    padding: 40px;
+    background: #f8f9fa;
+    position: relative;
+    overflow-y: auto;
+}
+
+.info-panel {
+    width: 600px;
+    background: white;
+    border-left: 3px solid #667eea;
+    overflow-y: auto;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+}
+
+.info-content {
+    padding: 40px;
+}
+
+.info-panel h2 {
+    color: #1e3c72;
+    font-size: 2em;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 10px;
+}
+
+.info-panel h3 {
+    color: #2a5298;
+    font-size: 1.5em;
+    margin-top: 25px;
+    margin-bottom: 15px;
+}
+
+.info-panel h4 {
+    color: #4a5568;
+    font-size: 1.2em;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.info-panel p, .info-panel li {
+    line-height: 1.8;
+    color: #2d3748;
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+.info-panel ul {
+    margin-left: 25px;
+    margin-bottom: 15px;
+}
+
+.info-panel code {
+    background: #f7fafc;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: #e53e3e;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+.info-panel .formula {
+    background: #edf2f7;
+    padding: 15px;
+    border-left: 4px solid #667eea;
+    margin: 20px 0;
+    font-family: 'Courier New', monospace;
+    overflow-x: auto;
+}
+
+.info-panel .highlight {
+    background: #fef5e7;
+    padding: 15px;
+    border-left: 4px solid #f39c12;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+.info-panel .important {
+    background: #fef2f2;
+    padding: 15px;
+    border-left: 4px solid #e53e3e;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+.svg-container {
+    width: 100%;
+    height: 100%;
+    min-height: 1000px;
+}
+
+.component {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.component rect {
+    fill: white;
+    stroke: #2c3e50;
+    stroke-width: 2;
+    transition: all 0.3s ease;
+}
+
+.component text {
+    fill: #2c3e50;
+    font-size: 14px;
+    font-weight: 500;
+    pointer-events: none;
+    user-select: none;
+}
+
+.component:hover rect {
+    fill: #667eea;
+    stroke: #1e3c72;
+    stroke-width: 3;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+.component:hover text {
+    fill: white;
+}
+
+.component.active rect {
+    fill: #2a5298;
+    stroke: #1e3c72;
+    stroke-width: 3;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3));
+}
+
+.component.active text {
+    fill: white;
+}
+
+.arrow {
+    stroke: #34495e;
+    stroke-width: 2;
+    fill: none;
+    marker-end: url(#arrowhead);
+}
+
+.arrow-label {
+    fill: #7f8c8d;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.dashed-box {
+    stroke: #95a5a6;
+    stroke-width: 2;
+    stroke-dasharray: 5,5;
+    fill: none;
+}
+
+.badge {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.reference {
+    background: #e6f2ff;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 0.95em;
+}
+
+.reference strong {
+    color: #2a5298;
+}
+
+.welcome-message {
+    text-align: center;
+    color: #718096;
+    padding: 100px 40px;
+}
+
+.welcome-message h2 {
+    color: #2d3748;
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.welcome-message p {
+    font-size: 1.3em;
+    line-height: 1.8;
+}
+
+.welcome-message .icon {
+    font-size: 5em;
+    margin-bottom: 20px;
+    opacity: 0.3;
+}
+
+@media (max-width: 1400px) {
+    .main-content {
+        flex-direction: column;
+    }
+
+    .info-panel {
+        width: 100%;
+        border-left: none;
+        border-top: 3px solid #667eea;
+        max-height: 500px;
+    }
+}
+
+.tag {
+    display: inline-block;
+    background: #48bb78;
+    color: white;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    margin-left: 10px;
+    vertical-align: middle;
+}
+
+.tag.optional {
+    background: #ed8936;
+}
+
+.tag.critical {
+    background: #e53e3e;
+}
+
+.complexity {
+    background: #bee3f8;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 15px 0;
+    font-weight: bold;
+    color: #2c5282;
+}
